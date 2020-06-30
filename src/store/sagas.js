@@ -1,7 +1,16 @@
 import { fromJS } from 'immutable';
 import { put, takeLatest, all, fork } from 'redux-saga/effects';
 
-import { setMerchants, loadMerchantsFailed, LOAD_MERCHANTS, ADD_MERCHANT, addMerchantFailed, addMerchantSucceeded } from './actions';
+import {
+    setMerchants,
+    LOAD_MERCHANTS,
+    ADD_MERCHANT,
+    addMerchantSucceeded,
+    REMOVE_MERCHANT,
+    removeMerchantSucceeded,
+    UPDATE_MERCHANT,
+    updateMerchantSucceeded,
+} from './actions';
 
 function* loadMerchants() {
     try {
@@ -27,7 +36,7 @@ function* loadMerchants() {
         }
         yield put(setMerchants(fromJS(response)));
     } catch (e) {
-        yield put(loadMerchantsFailed(e.message));
+        // TODO
     }
     return true;
 }
@@ -35,8 +44,7 @@ function* sagaLoadMerchants() {
     yield takeLatest(LOAD_MERCHANTS, loadMerchants);
 }
 
-
-function* addMerchants(action) {
+function* addMerchant(action) {
     try {
         const response = yield fetch('merchant/add', { method: 'PUT', body: JSON.stringify(action.data) });
         if (response.status === true) {
@@ -45,18 +53,57 @@ function* addMerchants(action) {
             throw new Error('Merchant add failed');
         }
     } catch (e) {
-        yield put(addMerchantSucceeded(action.data));
-        yield put(addMerchantFailed(e.message));
+        // yield put(addMerchantSucceeded(action.data));
+        // TODO
     }
     return true;
 }
 function* sagaAddMerchant() {
-    yield takeLatest(ADD_MERCHANT, addMerchants);
+    yield takeLatest(ADD_MERCHANT, addMerchant);
+}
+
+
+function* removeMerchant(action) {
+    try {
+        const response = yield fetch('merchant/remove', { method: 'DELETE', body: JSON.stringify({ id: action.id }) });
+        if (response.status === true) {
+            yield put(removeMerchantSucceeded(action.id));
+        } else {
+            throw new Error('Merchant remove failed');
+        }
+    } catch (e) {
+        // TODO
+        // yield put(removeMerchantSucceeded(action.id));
+    }
+    return true;
+}
+function* sagaRemoveMerchant() {
+    yield takeLatest(REMOVE_MERCHANT, removeMerchant);
+}
+
+
+function* updateMerchant(action) {
+    try {
+        const response = yield fetch('merchant/update', { method: 'POST', body: JSON.stringify({ id: action.id, data: action.data }) });
+        if (response.status === true) {
+            yield put(updateMerchantSucceeded(action.id));
+        } else {
+            throw new Error('Merchant update failed');
+        }
+    } catch (e) {
+        // TODO
+    }
+    return true;
+}
+function* sagaUpdateMerchant() {
+    yield takeLatest(UPDATE_MERCHANT, updateMerchant);
 }
 
 export default function* mainSaga() {
     yield all([
         fork(sagaLoadMerchants),
         fork(sagaAddMerchant),
+        fork(sagaRemoveMerchant),
+        fork(sagaUpdateMerchant),
     ]);
 };

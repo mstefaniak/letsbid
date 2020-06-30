@@ -22,13 +22,6 @@ export function addMerchantSucceeded(data) {
     };
 };
 
-export const ADD_MERCHANT_FAILED = 'ADD-MERCHANT-FAILED';
-export function addMerchantFailed() {
-    return {
-        type: ADD_MERCHANT_FAILED,
-    };
-};
-
 export const LOAD_MERCHANTS = 'LOAD-MERCHANTS';
 export function loadMerchants() {
     return {
@@ -36,10 +29,36 @@ export function loadMerchants() {
     };
 };
 
-export const LOAD_MERCHANTS_FAILED = 'LOAD-MERCHANTS-FAILED';
-export function loadMerchantsFailed(error) {
+export const REMOVE_MERCHANT = 'REMOVE-MERCHANT';
+export function removeMerchant(id) {
     return {
-        type: LOAD_MERCHANTS_FAILED,
-        error,
+        type: REMOVE_MERCHANT,
+        id,
+    };
+};
+
+export const REMOVE_MERCHANT_SUCCEEDED = 'REMOVE-MERCHANT-SUCCEEDED';
+export function removeMerchantSucceeded(id) {
+    return {
+        type: REMOVE_MERCHANT_SUCCEEDED,
+        id,
+    };
+};
+
+export const UPDATE_MERCHANT = 'UPDATE-MERCHANT';
+export function updateMerchant(id, data) {
+    return {
+        type: UPDATE_MERCHANT,
+        id,
+        data,
+    };
+};
+
+export const UPDATE_MERCHANT_SUCCEEDED = 'UPDATE-MERCHANT-SUCCEEDED';
+export function updateMerchantSucceeded(id, data) {
+    return {
+        type: UPDATE_MERCHANT_SUCCEEDED,
+        id,
+        data,
     };
 };

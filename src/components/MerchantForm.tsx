@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Drawer, Form, Button, Col, Row, Input, Switch } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 
-import { addMerchant } from '../store/actions';
+import { addMerchant, updateMerchant } from '../store/actions';
 import { Merchant } from '../types';
 
 type FormProps = {
@@ -16,7 +16,7 @@ const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element =>
     const dispatch = useDispatch();
     const [hasPremium, setHasPremium] = useState(merchant?.get('hasPremium') || false);
     const formRef = React.createRef<FormInstance>();
-    const initialValues = merchant ? merchant.toJS() : {};
+    const initialValues = useMemo(() => merchant ? merchant.toJS() : {}, [merchant]);
 
     useEffect(() => {
         formRef.current?.resetFields();
@@ -26,9 +26,15 @@ const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element =>
     const onSave = (formData: Merchant): void => {
         const merchantData = {
             ...formData,
-            hasPremium: hasPremium.current,
+            hasPremium,
         }
-        dispatch(addMerchant(merchantData));
+
+        if (initialValues?.id) {
+            dispatch(updateMerchant(initialValues?.id, merchantData));
+        } else {
+            dispatch(addMerchant(merchantData));
+        }
+
         formRef.current?.resetFields();
         onClose();
     };
