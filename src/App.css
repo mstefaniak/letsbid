@@ -29,6 +29,7 @@
 
 .App-content {
     margin: 40px 80px;
+    text-align: left;
 }
 
 @keyframes App-logo-appearance {
