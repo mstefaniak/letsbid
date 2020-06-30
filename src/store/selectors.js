@@ -1,7 +1,5 @@
-import { Map } from 'immutable';
-
 export const getMerchants = (state) =>
-    state.get('merchants') || Map();
+    state.get('merchants');
 
 export const getBids = (state, id) =>
     state.getIn(['merchants', id]).get('bids');
