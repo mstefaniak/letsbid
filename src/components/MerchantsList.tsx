@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { List, Avatar, Button, Divider, Modal } from 'antd';
 import { PlusOutlined, CrownTwoTone } from '@ant-design/icons';
 
-import { Merchant } from '../types';
+import { Merchant, Bids } from '../types';
 
 import { loadMerchants, removeMerchant } from '../store/actions';
 import { getMerchants } from '../store/selectors';
 
+import MerchantBids from './MerchantBids';
 import MerchantForm from './MerchantForm';
 
 
@@ -26,6 +27,8 @@ const MerchantsList = (): JSX.Element => {
     const [formVisible, setFormVisible] = useState(false);
     const [initialData, setInitialData] = useState<Merchant>();
     const [idToRemove, setIdToRemove] = useState(0);
+    const [bids, setBids] = useState<Bids>();
+    const [bidsOpen, setBidsOpen] = useState(false);
 
     useEffect((): void => {
         dispatch(loadMerchants());
@@ -58,16 +61,23 @@ const MerchantsList = (): JSX.Element => {
         hideModal();
     }
 
-    const onShowBidsClick = (): void => {
+    const onShowBidsClick = (merchant: Merchant): void => {
+        setBids(merchant?.get('bids'));
+        setBidsOpen(true);
+    };
 
+    const onBidsClose = (): void => {
+        setBidsOpen(false);
     };
 
     return (
         <React.Fragment>
             <Button type="primary" onClick={addMerchant}>
-                <PlusOutlined />Add merchant
+                <PlusOutlined />
+                Add merchant
             </Button>
             <MerchantForm merchant={initialData} visible={formVisible} onClose={onFormClose} />
+            <MerchantBids bids={bids} visible={bidsOpen} onClose={onBidsClose} />
             <Modal
                 title="Remove merchant"
                 visible={!!idToRemove}
@@ -81,13 +91,16 @@ const MerchantsList = (): JSX.Element => {
             <Divider />
             <List
                 itemLayout="horizontal"
-                dataSource={merchants.valueSeq()}
+                dataSource={merchants.valueSeq().toArray()}
+                pagination={{
+                    pageSize: 10,
+                }}
                 renderItem={(merchant: Merchant): JSX.Element => (
                     <List.Item
                         actions={[
                             <a onClick={() => onEditClick(merchant)} key="list-edit">edit</a>,
                             <a onClick={() => onRemoveClick(merchant)} key="list-edit">remove</a>,
-                            <a onClick={onShowBidsClick} key="list-bids">show bids</a>
+                            <a onClick={() => onShowBidsClick(merchant)} key="list-bids">show bids</a>
                         ]}
                     >
                         <List.Item.Meta
