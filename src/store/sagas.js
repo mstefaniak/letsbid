@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable';
 import { put, takeLatest, all, fork } from 'redux-saga/effects';
 
 import {
@@ -50,7 +49,7 @@ function* loadMerchants() {
                 bids: [],
             },
         }
-        yield put(setMerchants(fromJS(response)));
+        yield put(setMerchants(response));
     } catch (e) {
         // TODO
     }
@@ -69,7 +68,7 @@ function* addMerchant(action) {
             throw new Error('Merchant add failed');
         }
     } catch (e) {
-        // yield put(addMerchantSucceeded(action.data));
+        yield put(addMerchantSucceeded(action.data));
         // TODO
     }
     return true;
@@ -89,7 +88,7 @@ function* removeMerchant(action) {
         }
     } catch (e) {
         // TODO
-        // yield put(removeMerchantSucceeded(action.id));
+        yield put(removeMerchantSucceeded(action.id));
     }
     return true;
 }
@@ -102,11 +101,12 @@ function* updateMerchant(action) {
     try {
         const response = yield fetch('merchant/update', { method: 'POST', body: JSON.stringify({ id: action.id, data: action.data }) });
         if (response.status === true) {
-            yield put(updateMerchantSucceeded(action.id));
+            yield put(updateMerchantSucceeded(action.id, action.data));
         } else {
             throw new Error('Merchant update failed');
         }
     } catch (e) {
+        yield put(updateMerchantSucceeded(action.id, action.data));
         // TODO
     }
     return true;

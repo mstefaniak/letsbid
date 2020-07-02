@@ -14,14 +14,13 @@ type FormProps = {
 
 const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element => {
     const dispatch = useDispatch();
-    const [hasPremium, setHasPremium] = useState(merchant?.get('hasPremium') || false);
+    const [hasPremium, setHasPremium] = useState(merchant?.hasPremium || false);
     const formRef = React.createRef<FormInstance>();
-    const initialValues = useMemo(() => merchant ? merchant.toJS() : {}, [merchant]);
 
     useEffect(() => {
         formRef.current?.resetFields();
-        setHasPremium(initialValues?.hasPremium);
-    }, [initialValues]);
+        setHasPremium(merchant?.hasPremium || false);
+    }, [merchant]);
 
     const onSave = (formData: Merchant): void => {
         const merchantData = {
@@ -29,12 +28,12 @@ const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element =>
             hasPremium,
         }
 
-        if (initialValues?.id) {
-            dispatch(updateMerchant(initialValues?.id, merchantData));
+        if (merchant?.id) {
+            dispatch(updateMerchant(merchant?.id, merchantData));
         } else {
             dispatch(addMerchant(merchantData));
         }
-
+        // TODO: not working because merchant property still set
         formRef.current?.resetFields();
         onClose();
     };
@@ -52,7 +51,7 @@ const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element =>
             visible={visible}
             bodyStyle={{ paddingBottom: 80 }}
         >
-            <Form ref={formRef} layout="vertical" initialValues={initialValues} onFinish={(values) => onSave(values)}>
+            <Form ref={formRef} layout="vertical" initialValues={merchant} onFinish={onSave}>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item

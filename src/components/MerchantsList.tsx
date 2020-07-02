@@ -13,8 +13,7 @@ import MerchantForm from './MerchantForm';
 
 
 const Description = ({ merchant }: { merchant: Merchant }): JSX.Element => {
-    const email = merchant.get('email');
-    const phone = merchant.get('phone');
+    const { email, phone } = merchant;
 
     return (
         <span>Email: <a href={`mailto: ${email}`}>{email}</a>, Phone: <a href={`tel: ${phone}`}>{phone}</a></span>
@@ -26,7 +25,7 @@ const MerchantsList = (): JSX.Element => {
     const merchants = useSelector(getMerchants);
     const [formVisible, setFormVisible] = useState(false);
     const [initialData, setInitialData] = useState<Merchant>();
-    const [idToRemove, setIdToRemove] = useState(0);
+    const [idToRemove, setIdToRemove] = useState('');
     const [bids, setBids] = useState<Bids>();
     const [bidsOpen, setBidsOpen] = useState(false);
 
@@ -49,11 +48,11 @@ const MerchantsList = (): JSX.Element => {
     };
 
     const onRemoveClick = (merchant: Merchant): void => {
-        setIdToRemove(merchant?.get('id') || 0);
+        setIdToRemove(merchant?.id || '');
     };
 
     const hideModal = (): void => {
-        setIdToRemove(0);
+        setIdToRemove('');
     };
 
     const remove = () => {
@@ -62,7 +61,7 @@ const MerchantsList = (): JSX.Element => {
     }
 
     const onShowBidsClick = (merchant: Merchant): void => {
-        setBids(merchant?.get('bids'));
+        setBids(merchant?.bids);
         setBidsOpen(true);
     };
 
@@ -91,7 +90,7 @@ const MerchantsList = (): JSX.Element => {
             <Divider />
             <List
                 itemLayout="horizontal"
-                dataSource={merchants.valueSeq().toArray()}
+                dataSource={merchants}
                 pagination={{
                     pageSize: 10,
                 }}
@@ -104,11 +103,11 @@ const MerchantsList = (): JSX.Element => {
                         ]}
                     >
                         <List.Item.Meta
-                            avatar={<Avatar src={`${merchant.get('avatarUrl')}`} />}
+                            avatar={<Avatar src={`${merchant.avatarUrl}`} />}
                             title={<>
-                                {merchant.get('firstname')} {merchant.get('lastname')}
+                                {merchant.firstname} {merchant.lastname}
                                 {' '}
-                                {merchant.get('hasPremium') && <CrownTwoTone twoToneColor="red" />}
+                                {merchant.hasPremium && <CrownTwoTone twoToneColor="red" />}
                             </>}
                             description={<Description merchant={merchant} />}
                         />

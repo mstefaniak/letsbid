@@ -1,12 +1,12 @@
 import React from 'react';
 import { Drawer, Table } from 'antd';
 import { format } from 'date-fns';
-import { Bids, BidJs } from '../types';
+import { Bids, Bid } from '../types';
 
 type MerchantBidsProps = {
     visible: boolean;
     onClose: () => void;
-    bids: Bids;
+    bids?: Bids;
 };
 
 const columns = [
@@ -14,27 +14,27 @@ const columns = [
         title: 'Car',
         dataIndex: 'carTitle',
         key: 'carTitle',
-        sorter: (a: BidJs, b: BidJs): number => ('' + a.carTitle).localeCompare(b.carTitle),
+        sorter: (a: Bid, b: Bid): number => ('' + a.carTitle).localeCompare(b.carTitle),
         render: (carTitle: string): string => `${carTitle}`,
     },
     {
         title: 'Amount',
         dataIndex: 'amount',
         key: 'amount',
-        sorter: (a: BidJs, b: BidJs): number => a.amount - b.amount,
+        sorter: (a: Bid, b: Bid): number => a.amount - b.amount,
         render: (amount: number): string => `${amount}€`,
     },
     {
         title: 'Created',
         dataIndex: 'created',
         key: 'created',
-        sorter: (a: BidJs, b: BidJs): number => a.created.getTime() - b.created.getTime(),
+        sorter: (a: Bid, b: Bid): number => a.created.getTime() - b.created.getTime(),
         render: (created: Date): string => format(created, 'Y-MM-dd'),
     },
 ];
 
 const MerchantBids = ({ visible, onClose, bids }: MerchantBidsProps): JSX.Element => {
-    const hasBids = bids?.size || false;
+    const hasBids = bids && bids.length;
 
     return (
         <Drawer
@@ -46,7 +46,7 @@ const MerchantBids = ({ visible, onClose, bids }: MerchantBidsProps): JSX.Elemen
         >
             {hasBids && <Table
                 columns={columns}
-                dataSource={bids.toJS()}
+                dataSource={bids}
                 rowKey={(record) => String(record.id)}
             />}
             {!hasBids && <div>No bids found</div>}

@@ -1,17 +1,14 @@
-import { Map, List } from 'immutable';
-
-export type BidJs = {
+export type Bid = {
     id: string;
     carTitle: string;
     amount: number;
     created: Date;
 };
-export type Bid = Map<string, BidJs>;
 
-export type Bids = List<Bid>;
+export type Bids = Array<Bid>;
 
-export type Merchant = Map<string, {
-    id: string;
+export type Merchant = {
+    id?: string;
     firstname: string;
     lastname: string;
     avatarUrl: string;
@@ -19,4 +16,4 @@ export type Merchant = Map<string, {
     phone: string;
     hasPremium: boolean;
     bids: Bids;
-}>
+};
