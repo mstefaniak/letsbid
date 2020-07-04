@@ -34,7 +34,7 @@ const columns = [
 ];
 
 const MerchantBids = ({ visible, onClose, bids }: MerchantBidsProps): JSX.Element => {
-    const hasBids = bids && bids.length;
+    const hasBids = !!(bids && bids.length);
 
     return (
         <Drawer

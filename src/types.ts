@@ -15,5 +15,5 @@ export type Merchant = {
     email: string;
     phone: string;
     hasPremium: boolean;
-    bids: Bids;
+    bids?: Bids;
 };

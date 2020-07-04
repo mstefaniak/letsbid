@@ -25,7 +25,6 @@ export default function reducer(state = defaultState, action: ActionTypes) {
                 ...state,
                 [id]: {
                     id,
-                    bids: [],
                     ...action.data,
                 },
             };

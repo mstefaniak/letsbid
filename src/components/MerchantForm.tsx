@@ -5,6 +5,7 @@ import { FormInstance } from 'antd/lib/form';
 
 import { addMerchant, updateMerchant } from '../store/actions';
 import { Merchant } from '../types';
+import { Store } from 'rc-field-form/lib/interface';
 
 type FormProps = {
     merchant?: Merchant,
@@ -22,11 +23,15 @@ const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element =>
         setHasPremium(merchant?.hasPremium || false);
     }, [merchant]);
 
-    const onSave = (formData: Merchant): void => {
+    const onSave = (formData: Store): void => {
         const merchantData = {
-            ...formData,
+            firstname: formData.firstname,
+            lastname: formData.lastname,
+            avatarUrl: formData.avatarUrl,
+            email: formData.email,
+            phone: formData.phone,
             hasPremium,
-        }
+        };
 
         if (merchant?.id) {
             dispatch(updateMerchant(merchant?.id, merchantData));
