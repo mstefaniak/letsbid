@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { List, Avatar, Button, Divider, Modal } from 'antd';
 import { PlusOutlined, CrownTwoTone } from '@ant-design/icons';
@@ -20,12 +20,21 @@ const Description = ({ merchant }: { merchant: Merchant }): JSX.Element => {
     )
 };
 
+const emptyMerchant: Merchant = {
+    firstname: '',
+    lastname: '',
+    email: '',
+    phone: '',
+    avatarUrl: '',
+    hasPremium: false,
+}
+
 const MerchantsList = (): JSX.Element => {
     const dispatch = useDispatch();
     const merchants = useSelector(getMerchants);
+    const merchantRef = useRef(emptyMerchant);
     const [formVisible, setFormVisible] = useState(false);
-    const [initialData, setInitialData] = useState<Merchant>();
-    const [idToRemove, setIdToRemove] = useState('');
+    const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
     const [bids, setBids] = useState<Bids>();
     const [bidsOpen, setBidsOpen] = useState(false);
 
@@ -34,29 +43,32 @@ const MerchantsList = (): JSX.Element => {
     }, [dispatch]);
 
     const addMerchant = (): void => {
+        merchantRef.current = emptyMerchant;
         setFormVisible(true);
     }
 
     const onFormClose = (): void => {
+        merchantRef.current = emptyMerchant;
         setFormVisible(false);
-        setInitialData(undefined);
     }
 
     const onEditClick = (merchant: Merchant): void => {
-        setInitialData(merchant);
+        merchantRef.current = merchant
         setFormVisible(true);
     };
 
     const onRemoveClick = (merchant: Merchant): void => {
-        setIdToRemove(merchant?.id || '');
+        merchantRef.current = merchant;
+        setShowRemoveConfirm(true);
     };
 
     const hideModal = (): void => {
-        setIdToRemove('');
+        merchantRef.current = emptyMerchant;
+        setShowRemoveConfirm(false);
     };
 
     const remove = () => {
-        dispatch(removeMerchant(idToRemove));
+        dispatch(removeMerchant(merchantRef.current?.id || ''));
         hideModal();
     }
 
@@ -75,11 +87,11 @@ const MerchantsList = (): JSX.Element => {
                 <PlusOutlined />
                 Add merchant
             </Button>
-            <MerchantForm merchant={initialData} visible={formVisible} onClose={onFormClose} />
+            <MerchantForm merchant={merchantRef.current} visible={formVisible} onClose={onFormClose} />
             <MerchantBids bids={bids} visible={bidsOpen} onClose={onBidsClose} />
             <Modal
                 title="Remove merchant"
-                visible={!!idToRemove}
+                visible={showRemoveConfirm}
                 onOk={remove}
                 onCancel={hideModal}
                 okText="Yes"

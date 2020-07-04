@@ -28,8 +28,8 @@ const columns = [
         title: 'Created',
         dataIndex: 'created',
         key: 'created',
-        sorter: (a: Bid, b: Bid): number => a.created.getTime() - b.created.getTime(),
-        render: (created: Date): string => format(created, 'Y-MM-dd'),
+        sorter: (a: Bid, b: Bid): number => (new Date(a.created)).getTime() - (new Date(b.created)).getTime(),
+        render: (created: Date): string => format(new Date(created), 'Y-MM-dd'),
     },
 ];
 

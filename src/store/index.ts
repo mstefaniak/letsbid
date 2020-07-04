@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Merchant } from '../types';
 import { ActionTypes } from './actions';
+import generateRandomBids from '../helpers';
 
 import {
     SET_MERCHANTS,
@@ -26,6 +27,7 @@ export default function reducer(state = defaultState, action: ActionTypes) {
                 [id]: {
                     id,
                     ...action.data,
+                    bids: generateRandomBids(),
                 },
             };
         }
