@@ -51,7 +51,8 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "checkTS": "tsc -p tsconfig.json",
-    "lint": "eslint -c .eslintrc.js --ext .js --ext .jsx --ext .ts --ext .tsx src"
+    "lint": "eslint -c .eslintrc.js --ext .js --ext .jsx --ext .ts --ext .tsx src",
+    "api-mock": "node mock"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -131,6 +132,7 @@
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react-hooks": "^4.0.4",
+    "node-mock-server": "^0.25.4",
     "prettier": "^2.0.5",
     "regenerator-runtime": "^0.13.5",
     "typescript": "^3.9.5"

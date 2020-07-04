@@ -1,4 +1,5 @@
 import { put, takeLatest, all, fork } from 'redux-saga/effects';
+import apiData from '../apiData';
 
 import {
     setMerchants,
@@ -11,47 +12,13 @@ import {
     updateMerchantSucceeded,
 } from './actions';
 
+
 function* loadMerchants() {
     try {
-        // const response = yield fetch('merchants');
-        const response = {
-            1: {
-                id: 1,
-                firstname: 'Jane',
-                lastname: 'Smith',
-                email: 'jane.smith@gmail.com',
-                avatarUrl: 'https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light',
-                phone: '+123123766',
-                hasPremium: true,
-                bids: [{
-                    carTitle: 'Fiat Panda',
-                    created: new Date('2020-07-01'),
-                    amount: 1000,
-                },
-                {
-                    carTitle: 'Peugeot 5008',
-                    created: new Date('2020-07-02'),
-                    amount: 999,
-                },
-                {
-                    carTitle: 'Nissan Primera',
-                    created: new Date('2020-06-29'),
-                    amount: 1002,
-                }],
-            },
-            2: {
-                id: 2,
-                firstname: 'John',
-                lastname: 'Smith',
-                email: 'john.smith2@gmail.com',
-                avatarUrl: 'https://avataaars.io/?avatarStyle=Circle&topType=LongHairBun&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light',
-                phone: '+183761873',
-                bids: [],
-            },
-        }
+        const response = yield apiData('merchants');
         yield put(setMerchants(response));
     } catch (e) {
-        // TODO
+        console.error(e);
     }
     return true;
 }
@@ -61,15 +28,14 @@ function* sagaLoadMerchants() {
 
 function* addMerchant(action) {
     try {
-        const response = yield fetch('merchant/add', { method: 'PUT', body: JSON.stringify(action.data) });
+        const response = yield apiData('merchant', 'POST', action.data);
         if (response.status === true) {
             yield put(addMerchantSucceeded(action.data));
         } else {
             throw new Error('Merchant add failed');
         }
     } catch (e) {
-        yield put(addMerchantSucceeded(action.data));
-        // TODO
+        console.error(e);
     }
     return true;
 }
@@ -80,15 +46,14 @@ function* sagaAddMerchant() {
 
 function* removeMerchant(action) {
     try {
-        const response = yield fetch('merchant/remove', { method: 'DELETE', body: JSON.stringify({ id: action.id }) });
+        const response = yield apiData('merchant', 'DELETE', { id: action.id });
         if (response.status === true) {
             yield put(removeMerchantSucceeded(action.id));
         } else {
             throw new Error('Merchant remove failed');
         }
     } catch (e) {
-        // TODO
-        yield put(removeMerchantSucceeded(action.id));
+        console.error(e);
     }
     return true;
 }
@@ -99,7 +64,7 @@ function* sagaRemoveMerchant() {
 
 function* updateMerchant(action) {
     try {
-        const response = yield fetch('merchant/update', { method: 'POST', body: JSON.stringify({ id: action.id, data: action.data }) });
+        const response = yield apiData('merchant', 'PUT', { id: action.id, data: action.data });
         if (response.status === true) {
             yield put(updateMerchantSucceeded(action.id, action.data));
         } else {

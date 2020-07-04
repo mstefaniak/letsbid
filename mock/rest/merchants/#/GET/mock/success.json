@@ -1,0 +1,38 @@
+{
+    "1": {
+        "avatarUrl": "https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
+        "bids": [
+            {
+                "amount": 1000,
+                "carTitle": "Fiat Panda",
+                "created": "2020-07-01T00:00:00.000Z"
+            },
+            {
+                "amount": 999,
+                "carTitle": "Peugeot 5008",
+                "created": "2020-07-02T00:00:00.000Z"
+            },
+            {
+                "amount": 1002,
+                "carTitle": "Nissan Primera",
+                "created": "2020-06-29T00:00:00.000Z"
+            }
+        ],
+        "email": "jane.smith@gmail.com",
+        "firstname": "Jane",
+        "hasPremium": true,
+        "id": 1,
+        "lastname": "Smith",
+        "phone": "+123123766"
+    },
+    "2": {
+        "avatarUrl": "https://avataaars.io/?avatarStyle=Circle&topType=LongHairBun&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
+        "bids": [
+        ],
+        "email": "john.smith2@gmail.com",
+        "firstname": "John",
+        "id": 2,
+        "lastname": "Smith",
+        "phone": "+183761873"
+    }
+}
