@@ -1,12 +1,10 @@
 # To start
 
-`yarn`
-and then:
-`yarn start`
+`yarn` and then `yarn start`
 
 # To mock API
 
-`yarn api-mock``
+`yarn api-mock`
 
 
 # Front-end Test Task
@@ -27,14 +25,14 @@ Back-end API should be mocked.
 Also array of bids which will be assigned to newly created merchant can be randomized somehow.
 
 ## Data structure example
-Bid {
+`Bid {
   id: string,
   carTitle: string,
   amount: number,
   created: string
-}
+}`
 
-Merchant {
+`Merchant {
   id: string,
   firstname: string,
   lastname: string,
@@ -43,4 +41,4 @@ Merchant {
   phone: string,
   hasPremium: boolean,
   bids: Array<Bid>
-}
+}`

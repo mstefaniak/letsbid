@@ -15,15 +15,15 @@ type FormProps = {
 
 const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element => {
     const dispatch = useDispatch();
+    const [form] = Form.useForm();
     const [hasPremium, setHasPremium] = useState(merchant?.hasPremium || false);
-    const formRef = React.createRef<FormInstance>();
 
     useEffect(() => {
-        formRef.current?.resetFields();
+        form.resetFields();
         setHasPremium(merchant?.hasPremium || false);
     }, [merchant]);
 
-    const onSave = (formData: Store): void => {
+    const onFinish = (formData: Store): void => {
         const merchantData = {
             firstname: formData.firstname,
             lastname: formData.lastname,
@@ -38,13 +38,11 @@ const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element =>
         } else {
             dispatch(addMerchant(merchantData));
         }
-        // TODO: not working because merchant property still set
-        formRef.current?.resetFields();
-        onClose();
+        onFormClose();
     };
 
     const onFormClose = () => {
-        formRef.current?.resetFields();
+        form.resetFields();
         onClose();
     }
 
@@ -56,7 +54,7 @@ const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element =>
             visible={visible}
             bodyStyle={{ paddingBottom: 80 }}
         >
-            <Form ref={formRef} layout="vertical" initialValues={merchant} onFinish={onSave}>
+            <Form form={form} layout="vertical" initialValues={merchant} onFinish={onFinish}>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item

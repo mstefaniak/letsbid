@@ -68,7 +68,9 @@ const MerchantsList = (): JSX.Element => {
     };
 
     const remove = () => {
-        dispatch(removeMerchant(merchantRef.current?.id || ''));
+        if (merchantRef.current?.id) {
+            dispatch(removeMerchant(merchantRef.current?.id));
+        }
         hideModal();
     }
 
