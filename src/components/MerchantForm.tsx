@@ -19,7 +19,6 @@ const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element =>
 
     useEffect(() => {
         form.resetFields();
-        console.log('>>>init', merchant);
         setHasPremium(merchant?.hasPremium || false);
     }, [merchant]);
 
