@@ -16,7 +16,7 @@ const cars = [
 
 const getRandomNumber = (max: number): number => Math.floor(Math.random() * (max + 1));
 
-const generateRandomBids = (): Bids => {
+const generateRandomBids = (max: number): Bids => {
     const size = getRandomNumber(10);
     return Array(size).fill({}).map(() => ({
         id: uuidv4(),
@@ -26,4 +26,4 @@ const generateRandomBids = (): Bids => {
     }));
 }
 
-export default generateRandomBids;
+export { generateRandomBids, getRandomNumber };
