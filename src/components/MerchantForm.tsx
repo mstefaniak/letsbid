@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Drawer, Form, Button, Col, Row, Input, Switch } from 'antd';
-import { FormInstance } from 'antd/lib/form';
 
 import { addMerchant, updateMerchant } from '../store/actions';
 import { Merchant } from '../types';
@@ -20,6 +19,7 @@ const MerchantForm = ({ merchant, visible, onClose }: FormProps): JSX.Element =>
 
     useEffect(() => {
         form.resetFields();
+        console.log('>>>init', merchant);
         setHasPremium(merchant?.hasPremium || false);
     }, [merchant]);
 
